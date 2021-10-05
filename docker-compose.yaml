@@ -1,0 +1,38 @@
+version: '3.3'
+services:
+
+  # rstudio:
+  #   image: rocker/geospatial:latest
+  #   ports:
+  #     - 8787:8787
+  #   volumes:
+  #     - .:/home/rstudio/work
+  #   environment:
+  #     PASSWORD: andy1234
+  
+  database:
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data/database:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: andy1234
+      PGDATA: /tmp
+
+  jupyter-notebook:
+    image: jupyter/datascience-notebook:latest
+    ports:
+      - 8889:8888
+    volumes:
+      - .:/home/jovyan/work
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    depends_on:
+      - database
+    ports:
+      - 80:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: aarmestobrosio@buenosaires.gob.ar
+      PGADMIN_DEFAULT_PASSWORD: andy1234
